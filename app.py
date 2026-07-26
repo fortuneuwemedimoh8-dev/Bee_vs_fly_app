@@ -28,7 +28,8 @@ if uploaded_file is not None:
     
     if st.button("Predict"):
         img = image.resize((150, 150))
-        img_array = np.array(img, dtype=np.float32)
+        img_array = (np.array(img, dtype=np.float32) / 127.5) - 1.0
+        
         
         img_array = np.expand_dims(img_array, axis=0)
 
