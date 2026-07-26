@@ -19,7 +19,8 @@ def load_model():
         os.remove(model_path)
 
     # Direct Google Drive download link format
-    url = f'https://drive.google.com/uc?export=download&id={file_id}&confirm=t'
+    url = f'https://drive.google.com/uc?id={file_id}&export=download'
+        
     
     # Download using standard urllib
     urllib.request.urlretrieve(url, model_path)
