@@ -28,17 +28,15 @@ if uploaded_file is not None:
     
     if st.button("Predict"):
         img = image.resize((150, 150))
-        img_array = np.array(img)[:, :, ::-1] / 255.0
-        
-    
-        
+        img_array = np.array(img, dtype=np.float32) / 255.0
         img_array = np.expand_dims(img_array, axis=0)
 
-        prediction = model.predict(img_array)[0][0]
+        raw_pred = model.predict(img_array)[0][0]
+        
+        st.write(f"Raw Model Output: `{raw_pred}`")
 
-        if prediction > 0.5:
-            st.success(f"Result: **Fly 🪰** (Confidence: {prediction * 100:.1f}%)")
-            
+        if raw_pred > 0.5:
+            st.success(f"Result: **Fly 🪰** (Confidence: {raw_pred * 100:.1f}%)")
         else:
-            st.success(f"Result: **Bee 🐝** (Confidence: {(1 - prediction) * 100:.1f}%)")
+            st.success(f"Result: **Bee 🐝** (Confidence: {(1 - raw_pred) * 100:.1f}%)")
             
