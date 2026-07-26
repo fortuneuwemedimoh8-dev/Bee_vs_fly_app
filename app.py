@@ -4,11 +4,17 @@ import tensorflow as tf
 from huggingface_hub import hf_hub_download
 from PIL import Image
 
+# Title & Description
 st.title("Bee vs Fly Classifier 🐝🪰")
-st.write("Upload an image to test whether it's a Bee or a Fly!")
+st.write(
+    "Upload an image and the trained deep learning model will classify it."
+)
+
+# Class Labels
+CLASS_NAMES = ["Bee 🐝", "Fly 🪰"]
 
 
-# Download and cache model directly from Hugging Face
+# Download & Cache Model from Hugging Face
 @st.cache_resource
 def load_model():
     model_path = hf_hub_download(
@@ -22,31 +28,37 @@ model = load_model()
 
 # Image Uploader
 uploaded_file = st.file_uploader(
-    "Choose an image...", type=["jpg", "jpeg", "png"]
+    "Upload an Image", type=["jpg", "jpeg", "png"]
 )
 
 if uploaded_file is not None:
     image = Image.open(uploaded_file).convert("RGB")
     st.image(image, caption="Uploaded Image", use_container_width=True)
 
-    # Preprocess
+    # Preprocessing (Resize & Normalize)
     img_resized = image.resize((150, 150))
-    img_array = np.array(img_resized)
+    img_array = np.array(img_resized) / 255.0  # Scale pixel values to [0, 1]
     img_batch = np.expand_dims(img_array, axis=0)
 
-    # Predict logic
+    # Prediction
     predictions = model.predict(img_batch)[0]
 
+    # Binary classification logic
     if len(predictions) == 1:
         score = float(predictions[0])
-        bee_prob = 1.0 - score
-        fly_prob = score
+        # Assuming 0 = Bee, 1 = Fly
+        if score > 0.5:
+            predicted_class = CLASS_NAMES[1]  # Fly
+            confidence = score * 100
+        else:
+            predicted_class = CLASS_NAMES[0]  # Bee
+            confidence = (1.0 - score) * 100
     else:
-        bee_prob = float(predictions[0])
-        fly_prob = float(predictions[1])
+        predicted_idx = np.argmax(predictions)
+        predicted_class = CLASS_NAMES[predicted_idx]
+        confidence = float(predictions[predicted_idx]) * 100
 
-    # Display Results
-    st.write("### Predictions:")
-    st.progress(bee_prob, text=f"Bee: {bee_prob * 100:.2f}%")
-    st.progress(fly_prob, text=f"Fly: {fly_prob * 100:.2f}%")
+    # Group 1 Style Output Display
+    st.success(f"**Prediction:** {predicted_class}")
+    st.write(f"**Confidence:** {confidence:.2f}%")
     
