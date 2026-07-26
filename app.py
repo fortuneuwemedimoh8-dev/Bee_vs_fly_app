@@ -8,6 +8,8 @@ from PIL import Image
 st.title("🐝 Bee vs. Fly Classifier 🪰")
 st.write("Upload an image, and the AI model will predict whether it is a Bee or a Fly.")
 
+import urllib.request
+
 @st.cache_resource
 def load_model():
     file_id = '1iQSzUZMZ4jl_PAS_NMcCSE7_2T3XdDLS'
@@ -16,10 +18,14 @@ def load_model():
     if os.path.exists(model_path):
         os.remove(model_path)
 
-    url = f'https://drive.google.com/uc?id={file_id}'
-    gdown.download(url, model_path, quiet=False)
+    # Direct Google Drive download link format
+    url = f'https://drive.google.com/uc?export=download&id={file_id}&confirm=t'
+    
+    # Download using standard urllib
+    urllib.request.urlretrieve(url, model_path)
 
     return tf.keras.models.load_model(model_path)
+    
     
     
 
