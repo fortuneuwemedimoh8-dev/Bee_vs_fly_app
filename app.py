@@ -1,53 +1,52 @@
-import os
-import gdown
+import numpy as np
 import streamlit as st
 import tensorflow as tf
-import numpy as np
+from huggingface_hub import hf_hub_download
 from PIL import Image
 
-st.title("🐝 Bee vs. Fly Classifier 🪰")
-st.write("Upload an image, and the AI model will predict whether it is a Bee or a Fly.")
+st.title("Bee vs Fly Classifier 🐝🪰")
+st.write("Upload an image to test whether it's a Bee or a Fly!")
 
-import urllib.request
 
+# Download and cache model directly from Hugging Face
 @st.cache_resource
 def load_model():
-    file_id = '1iQSzUZMZ4jl_PAS_NMcCSE7_2T3XdDLS'
-    model_path = 'bee_vs_fly_model.keras'
-
-    if os.path.exists(model_path):
-        os.remove(model_path)
-
-    # Direct Google Drive download link format
-    url = f'https://drive.google.com/uc?id={file_id}&export=download'
-        
-    
-    # Download using standard urllib
-    urllib.request.urlretrieve(url, model_path)
-
+    model_path = hf_hub_download(
+        repo_id="fortuneuwemedimoh01/bee_vs_fly_model",
+        filename="bee_vs_fly_model.keras",
+    )
     return tf.keras.models.load_model(model_path)
-    
-    
-    
+
 
 model = load_model()
 
-uploaded_file = st.file_uploader("Upload Image", type=["jpg", "jpeg", "png"])
+# Image Uploader
+uploaded_file = st.file_uploader(
+    "Choose an image...", type=["jpg", "jpeg", "png"]
+)
+
 if uploaded_file is not None:
     image = Image.open(uploaded_file).convert("RGB")
-    st.image(image, caption="Uploaded Image", width=300)
+    st.image(image, caption="Uploaded Image", use_container_width=True)
 
-    if st.button("Predict"):
-        img = image.resize((150, 150))
-        img_array = tf.keras.applications.mobilenet_v2.preprocess_input(np.array(img, dtype=np.float32))
-        img_array = np.expand_dims(img_array, axis=0)
+    # Preprocess
+    img_resized = image.resize((150, 150))
+    img_array = np.array(img_resized)
+    img_batch = np.expand_dims(img_array, axis=0)
 
-        raw_pred = model.predict(img_array)[0][0]
+    # Predict logic
+    predictions = model.predict(img_batch)[0]
 
-        st.write(f"Raw Model Output: `{raw_pred}`")
+    if len(predictions) == 1:
+        score = float(predictions[0])
+        bee_prob = 1.0 - score
+        fly_prob = score
+    else:
+        bee_prob = float(predictions[0])
+        fly_prob = float(predictions[1])
 
-        if raw_pred > 0.5:
-            st.success(f"Result: **Fly 🪰** (Confidence: {raw_pred * 100:.1f}%)")
-        else:
-            st.success(f"Result: **Bee 🐝** (Confidence: {(1 - raw_pred) * 100:.1f}%)")
+    # Display Results
+    st.write("### Predictions:")
+    st.progress(bee_prob, text=f"Bee: {bee_prob * 100:.2f}%")
+    st.progress(fly_prob, text=f"Fly: {fly_prob * 100:.2f}%")
     
