@@ -17,7 +17,7 @@ def load_model():
         os.remove(model_path)
 
     url = f'https://drive.google.com/uc?id={file_id}&export=download'
-    gdown.download(url, model_path, quiet=False, fuzzy=True)
+    gdown.download(url, model_path, quiet=False)
 
     return tf.keras.models.load_model(model_path)
     
