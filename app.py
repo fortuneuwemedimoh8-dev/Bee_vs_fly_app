@@ -16,10 +16,11 @@ def load_model():
     if os.path.exists(model_path):
         os.remove(model_path)
 
-    url = f'https://drive.google.com/uc?id={file_id}&export=download'
+    url = f'https://drive.google.com/uc?id={file_id}'
     gdown.download(url, model_path, quiet=False)
 
     return tf.keras.models.load_model(model_path)
+    
     
 
 model = load_model()
