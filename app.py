@@ -35,6 +35,7 @@ if uploaded_file is not None:
 
         if prediction > 0.5:
             st.success(f"Result: **Fly 🪰** (Confidence: {prediction * 100:.1f}%)")
+            
         else:
             st.success(f"Result: **Bee 🐝** (Confidence: {(1 - prediction) * 100:.1f}%)")
             
