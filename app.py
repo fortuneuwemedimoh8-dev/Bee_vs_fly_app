@@ -13,11 +13,14 @@ def load_model():
     file_id = '1iQSzUZMZ4jl_PAS_NMcCSE7_2T3XdDLS'
     model_path = 'bee_vs_fly_model.keras'
 
-    if not os.path.exists(model_path):
-        url = f'https://drive.google.com/uc?id={file_id}&export=download'
-        gdown.download(url, model_path, quiet=False, fuzzy=True)
+    if os.path.exists(model_path):
+        os.remove(model_path)
+
+    url = f'https://drive.google.com/uc?id={file_id}&export=download'
+    gdown.download(url, model_path, quiet=False, fuzzy=True)
 
     return tf.keras.models.load_model(model_path)
+    
 
 model = load_model()
 
