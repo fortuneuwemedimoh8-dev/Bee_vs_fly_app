@@ -10,7 +10,7 @@ st.set_page_config(
     page_title="Bee vs Fly Classifier - CE 11", page_icon="🐝", layout="centered"
 )
 
-st.title("🐝 Bee vs Fly Image Classifier")
+st.title("🐝 Bee vs 🪰 Fly Image Classifier")
 st.subheader("CE 11 Mini Project")
 st.write(
     "Upload an image of a bee or a fly to predict its class and view model confidence."
