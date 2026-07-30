@@ -12,7 +12,8 @@ A Streamlit web app that uses a fine-tuned deep learning model to classify uploa
 | Fortune Uwemedimoh | [@fortuneuwemedimoh8-dev](https://github.com/fortuneuwemedimoh8-dev) | Model development, training, deployment |
 | Oswin | [@Oswin727](https://github.com/Oswin727) | Co-development support, testing, debugging assistance |
 | Baker | [@Baker1375](https://github.com/Baker1375) | Dataset research & documentation support |
-
+| Favour Effiong | [@favoureffiong995-hash](https://github.com/favoureffiong995-hash) | Testing |
+| Ini Ernest | [@Ini-ernest77](https://github.com/Ini-ernest77) | Dataset research & testing |
 ---
 
 ## 📌 Project Overview
