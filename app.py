@@ -1,59 +1,63 @@
 import numpy as np
 import streamlit as st
 import tensorflow as tf
-from huggingface_hub import hf_hub_download
 from PIL import Image
 
-# Title & Group Information
-st.title("Bee vs Fly Classifier 🐝🪰")
-st.subheader("CE11 (Mini Project)")
-st.write(
-    "Upload an image and the trained deep learning model will classify it."
+
+# 1. Page Configuration & Header
+st.set_page_config(
+    page_title="Bee vs Fly Classifier - CE 11", page_icon="🐝", layout="centered"
 )
 
+st.title("🐝 Bee vs Fly Image Classifier")
+st.subheader("CE 11 Mini Project")
+st.write(
+    "Upload an image of a bee or a fly to predict its class and view model confidence."
+)
 
-# Download & Cache Model from Hugging Face
+st.markdown("---")
+
+
+# 2. Load the Saved Model
 @st.cache_resource
 def load_model():
-    model_path = hf_hub_download(
-        repo_id="fortuneuwemedimoh01/bee_vs_fly_model",
-        filename="bee_vs_fly_model.keras",
-    )
-    return tf.keras.models.load_model(model_path)
+  model = tf.keras.models.load_model("bee_vs_fly_model.keras")
+  return model
 
 
 model = load_model()
 
-# Image Uploader
+# 3. Image Input Section
 uploaded_file = st.file_uploader(
-    "Choose an image...", type=["jpg", "jpeg", "png"]
+    "Choose an image (JPG, JPEG, PNG)...", type=["jpg", "jpeg", "png"]
 )
 
 if uploaded_file is not None:
-    image = Image.open(uploaded_file).convert("RGB")
-    st.image(image, caption="Uploaded Image", use_container_width=True)
+  # Display uploaded image
+  image = Image.open(uploaded_file).convert("RGB")
+  st.image(image, caption="Uploaded Image", use_column_width=True)
 
-    # Preprocessing
-    img_resized = image.resize((150, 150))
-    img_array = np.array(img_resized) / 255.0  # Normalized to [0, 1]
-    img_batch = np.expand_dims(img_array, axis=0)
+  # 4. Prediction Button
+  if st.button("🔍 Predict Image Class"):
+    with st.spinner("Analyzing image..."):
+      # Preprocess image to match training input (150x150)
+      img_resized = image.resize((150, 150))
+      img_array = np.array(img_resized)
+      img_array = np.expand_dims(img_array, axis=0)  # Make batch shape (1, 150, 150, 3)
 
-    # Prediction
-    predictions = model.predict(img_batch)[0]
+      # Make Prediction
+      prediction = model.predict(img_array)[0][0]
 
-    if len(predictions) == 1:
-        fly_prob = float(predictions[0])
-        bee_prob = 1.0 - fly_prob
-    else:
-        bee_prob = float(predictions[0])
-        fly_prob = float(predictions[1])
+      # Interpret Result (Sigmoid output: > 0.5 is Fly, <= 0.5 is Bee)
+      if prediction > 0.5:
+        label = "Fly 🪰"
+        confidence = prediction * 100
+      else:
+        label = "Bee 🐝"
+        confidence = (1 - prediction) * 100
 
-    st.subheader("Predictions:")
-
-    # Progress bars layout
-    st.write(f"Bee: {bee_prob * 100:.2f}%")
-    st.progress(bee_prob)
-
-    st.write(f"Fly: {fly_prob * 100:.2f}%")
-    st.progress(fly_prob)
-    
+      st.markdown("---")
+      # 5. Display Prediction Results & Confidence Score
+      st.success(f"**Prediction:** {label}")
+      st.info(f"**Confidence Score:** {confidence:.2f}%")
+        
