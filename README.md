@@ -44,3 +44,13 @@ This project builds an image classifier to distinguish between bees and flies us
 ```bash
 pip install -r requirements.txt
 streamlit run app.py
+## 📊 Results
+
+- **Training Accuracy:** ~99.9%
+- **Validation Accuracy:** ~99.5%
+- **Validation Loss:** 0.02
+
+The model generalizes well with no signs of overfitting.
+
+---
+*This project was developed as part of the CE 11 Mini Project assignment.*
