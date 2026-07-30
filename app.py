@@ -1,3 +1,4 @@
+import os
 import numpy as np
 import streamlit as st
 import tensorflow as tf
@@ -17,12 +18,12 @@ st.write(
 
 st.markdown("---")
 
-
 # 2. Load the Saved Model
 @st.cache_resource
 def load_model():
-  model = tf.keras.models.load_model("bee_vs_fly_model.keras")
-  return model
+    model = tf.keras.models.load_model("bee_vs_fly_model.keras")
+    return model
+    
 
 
 model = load_model()
