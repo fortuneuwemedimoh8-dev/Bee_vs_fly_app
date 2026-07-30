@@ -2,7 +2,7 @@
 
 **CE 11 Mini Project**
 
-A Streamlit web app that uses a fine-tuned deep learning model to classify uploaded images as either a **bee** or a **fly**, along with a confidence score.
+A Streamlit web app that uses a fine-tuned deep learning model to classify or predict uploaded images as either a **bee** or a **fly**, along with a confidence score.
 
 🔗 **Live App:** [Click here to try it](https://beevsflyapp-gqzyancaqsmtn32rquhbvq.streamlit.app/)
 
@@ -53,4 +53,4 @@ streamlit run app.py
 The model generalizes well with no signs of overfitting.
 
 ---
-*This project was developed as part of the CE 11 Mini Project assignment.*
+*This was developed as part of the CE 11  Project assignment.*
