@@ -26,6 +26,11 @@ def load_model():
     
 
 
+import os
+
+st.write("Current directory:", os.getcwd())
+st.write("Files:", os.listdir("."))
+
 model = load_model()
 
 # 3. Image Input Section
