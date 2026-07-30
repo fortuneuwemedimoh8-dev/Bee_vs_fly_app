@@ -41,10 +41,10 @@ if uploaded_file is not None:
   # 4. Prediction Button
   if st.button("🔍 Predict Image Class"):
     with st.spinner("Analyzing image..."):
-      # Preprocess image to match training input (150x150)
-      img_resized = image.resize((150, 150))
+      # Preprocess image to match training input (160×160)
+      img_resized = image.resize((160, 160))
       img_array = np.array(img_resized)
-      img_array = np.expand_dims(img_array, axis=0)  # Make batch shape (1, 150, 150, 3)
+      img_array = np.expand_dims(img_array, axis=0)  # Make batch shape (1, 160, 160, 3)
 
       # Make Prediction
       prediction = model.predict(img_array)[0][0]
