@@ -21,7 +21,7 @@ st.markdown("---")
 # 2. Load the Saved Model
 @st.cache_resource
 def load_model():
-    model = tf.keras.models.load_model("bee_vs_fly_model(1).keras")
+    model = tf.keras.models.load_model("bee_vs_fly_model (1).keras")
     return model
     
 
