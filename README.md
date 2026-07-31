@@ -17,6 +17,7 @@ A Streamlit web app that uses a fine-tuned deep learning model to classify or pr
 | Baker | [@Baker1375](https://github.com/Baker1375) | Dataset research & documentation support |
 | Favour Effiong | [@favoureffiong995-hash](https://github.com/favoureffiong995-hash) | Testing |
 | Ini Ernest | [@Ini-ernest77](https://github.com/Ini-ernest77) | Dataset research & testing |
+| Gospel Ime | [@Gospelakpan-del](https://GitHub.com/Gospelakpan-del) | Testing |
 
 ## 📌 Project Overview
 
